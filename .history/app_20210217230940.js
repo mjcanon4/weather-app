@@ -11,8 +11,9 @@ app.get("/", function (req, res) {
 });
 
 app.post("/", function (req, res) {
+  console.log(req.body.cityName);
   const apiKey = "57df2889f1424affedbbf4fb3213c516";
-  const q = req.body.cityName;
+  const q = "Tokyo";
   const unit = "imperial";
   const URL = `https://api.openweathermap.org/data/2.5/weather?q=${q}&appid=${apiKey}&units=${unit}`;
   https.get(URL, function (response) {
@@ -26,13 +27,7 @@ app.post("/", function (req, res) {
       const imgURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
       res.setHeader("Content-type", "text/html");
       res.write("The weather is currently " + weatherDescription);
-      res.write(
-        "<h1>The temperature in " +
-          q +
-          " is " +
-          temp +
-          " degrees Farenheit</h1>"
-      );
+      res.write("<h1>The temperature is " + temp + " degrees Farenheit</h1>");
       res.write("<img src=" + imgURL + ">");
       res.send();
     });

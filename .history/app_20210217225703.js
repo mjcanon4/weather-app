@@ -1,20 +1,11 @@
 const express = require("express");
 const https = require("https");
-const bodyParser = require("body-parser");
 
 const app = express();
-
-app.use(bodyParser.urlencoded({ extended: true }));
-
+const apiKey = "57df2889f1424affedbbf4fb3213c516";
+const q = "Tokyo";
+const URL = `https://api.openweathermap.org/data/2.5/weather?q=${q}&appid=57df2889f1424affedbbf4fb3213c516`;
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
-});
-
-app.post("/", function (req, res) {
-  const apiKey = "57df2889f1424affedbbf4fb3213c516";
-  const q = req.body.cityName;
-  const unit = "imperial";
-  const URL = `https://api.openweathermap.org/data/2.5/weather?q=${q}&appid=${apiKey}&units=${unit}`;
   https.get(URL, function (response) {
     console.log(response.statusCode);
 
@@ -26,13 +17,7 @@ app.post("/", function (req, res) {
       const imgURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
       res.setHeader("Content-type", "text/html");
       res.write("The weather is currently " + weatherDescription);
-      res.write(
-        "<h1>The temperature in " +
-          q +
-          " is " +
-          temp +
-          " degrees Farenheit</h1>"
-      );
+      res.write("<h1>The temperature is " + temp + "</h1>");
       res.write("<img src=" + imgURL + ">");
       res.send();
     });
